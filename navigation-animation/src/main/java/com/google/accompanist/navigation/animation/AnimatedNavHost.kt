@@ -23,6 +23,7 @@ import androidx.compose.animation.ContentTransform
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.animation.fadeIn
@@ -78,6 +79,7 @@ public fun AnimatedNavHost(
     modifier: Modifier = Modifier,
     contentAlignment: Alignment = Alignment.Center,
     route: String? = null,
+    transition: Transition<NavBackStackEntry>? = null,
     enterTransition: (AnimatedContentScope<NavBackStackEntry>.() -> EnterTransition) =
         { fadeIn(animationSpec = tween(700)) },
     exitTransition: (AnimatedContentScope<NavBackStackEntry>.() -> ExitTransition) =
@@ -93,6 +95,7 @@ public fun AnimatedNavHost(
         },
         modifier,
         contentAlignment,
+        transition,
         enterTransition,
         exitTransition,
         popEnterTransition,
@@ -121,6 +124,7 @@ public fun AnimatedNavHost(
     graph: NavGraph,
     modifier: Modifier = Modifier,
     contentAlignment: Alignment = Alignment.Center,
+    transition: Transition<NavBackStackEntry>? = null,
     enterTransition: (AnimatedContentScope<NavBackStackEntry>.() -> EnterTransition) =
         { fadeIn(animationSpec = tween(700)) },
     exitTransition: (AnimatedContentScope<NavBackStackEntry>.() -> ExitTransition) =
@@ -192,7 +196,7 @@ public fun AnimatedNavHost(
             }
         }
 
-        val transition = updateTransition(backStackEntry, label = "entry")
+        val transition = transition ?: updateTransition(backStackEntry, label = "entry")
         transition.AnimatedContent(
             modifier,
             transitionSpec = {
